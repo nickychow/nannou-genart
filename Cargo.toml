@@ -1,0 +1,154 @@
+[package]
+name = "nannou-genart"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+[dev-dependencies]
+nannou = { version ="0.18.1" }
+nannou_egui = "0.5.0"
+# rand = "0.8.5"
+
+# Shape
+[[example]]
+name = "p_2_0_03"
+path = "shape/p_2_0_03.rs"
+
+[[example]]
+name = "p_2_2_4_01"
+path = "shape/p_2_2_4_01.rs"
+
+[[example]]
+name = "p_2_2_4_02"
+path = "shape/p_2_2_4_02.rs"
+
+[[example]]
+name = "p_2_2_5_01"
+path = "shape/p_2_2_5_01.rs"
+
+# Random and Noise
+[[example]]
+name = "m_1_5_02"
+path = "random_and_noise/m_1_5_02.rs"
+
+[[example]]
+name = "m_1_5_03"
+path = "random_and_noise/m_1_5_03.rs"
+
+[[example]]
+name = "m_1_5_04"
+path = "random_and_noise/m_1_5_04.rs"
+
+# Nick
+[[example]]
+name = "spiral" # TODO: WIP
+path = "genart/spiral.rs"
+
+# GuruBlog
+[[example]]
+name = "sinewave"
+path = "guru/sinewave.rs"
+
+[[example]]
+name = "particles"
+path = "guru/particles.rs"
+
+[[example]]
+name = "perlin_noise"
+path = "guru/perlin_noise.rs"
+
+[[example]]
+name = "open_simplex"
+path = "guru/open_simplex.rs"
+
+[[example]]
+name = "light"
+path = "guru/light.rs"
+
+# Schotter
+[[example]]
+name = "schotter"
+path = "schotter/schotter4.rs"
+
+# Mactuitui's Github Universe Demo
+[[example]]
+name = "universe"
+path = "mactuitui/universe.rs"
+
+# Nick
+[[example]]
+name = "flow1"
+path = "nick/flow1.rs"
+
+[[example]]
+name = "flow2" # inspired by https://youtu.be/hwaBaoAPOU0
+path = "nick/flow2.rs"
+
+[[example]]
+name = "attractor" # Clifford's attractor inspired by finalfire
+path = "nick/attractor.rs"
+
+[[example]]
+name = "circle-packing" # TODO: WIP
+path = "nick/circle-packing.rs"
+
+[[example]]
+name = "joy-division" # TODO: WIP
+path = "nick/joy-division.rs"
+
+[[example]]
+name = "noise1"
+path = "nick/noise1.rs"
+
+[[example]]
+name = "noise-loops"
+path = "nick/noise-loops.rs"
+
+[[example]]
+name = "line"
+path = "nick/line.rs"
+
+# Nick
+[[example]]
+name = "test"
+path = "nick/test.rs"
+
+
+# Sketches
+[[example]]
+name = "uppity-parcel"
+path = "mitchmindtree/uppity-parcel.rs"
+
+[[example]]
+name = "sloppy-roof"
+path = "mitchmindtree/sloppy-roof.rs"
+
+[[example]]
+name = "rainy-grandfather"
+path = "mitchmindtree/rainy-grandfather.rs"
+
+[[example]]
+name = "delicate-umbrella"
+path = "mitchmindtree/delicate-umbrella.rs"
+
+[[example]]
+name = "aquatic-juice"
+path = "mitchmindtree/aquatic-juice.rs"
+
+# Nature of Code - Coding Challenges
+[[example]]
+name = "random-walker"
+path = "challenge/random-walker.rs"
+
+# Necessary Disorder
+[[example]]
+name = "scalar-fields"
+path = "necessarydisorder/scalar-fields.rs"
+
+# Xinnuo
+[[example]]
+name = "l1"
+path = "xinnuo/l1.rs"
