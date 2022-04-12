@@ -8,7 +8,7 @@ edition = "2021"
 [dependencies]
 
 [dev-dependencies]
-nannou = { version ="0.18.1" }
+nannou = "0.18.1"
 nannou_egui = "0.5.0"
 # rand = "0.8.5"
 
@@ -143,6 +143,18 @@ path = "mitchmindtree/aquatic-juice.rs"
 name = "random-walker"
 path = "challenge/random-walker.rs"
 
+[[example]]
+name = "simple-bouncing"
+path = "challenge/simple-bouncing.rs"
+
+[[example]]
+name = "bouncing-ball"
+path = "challenge/bouncing-ball.rs"
+
+[[example]]
+name = "acceleration"
+path = "challenge/acceleration.rs"
+
 # Necessary Disorder
 [[example]]
 name = "scalar-fields"
@@ -152,3 +164,13 @@ path = "necessarydisorder/scalar-fields.rs"
 [[example]]
 name = "l1"
 path = "xinnuo/l1.rs"
+
+# Nature of Code
+[[example]]
+name = "vector-1"
+path = "natureofcode/vector-1.rs"
+
+# nannou system
+[[example]]
+name = "window"
+path = "templates/window_coordinates.rs"

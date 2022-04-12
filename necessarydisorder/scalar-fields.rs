@@ -22,15 +22,15 @@ fn pixel_color(pos: &Vec2, time: f32) -> Rgb {
     // ) as f32;
     // let r = ease(i, 3.0);
 
-    let test = (2.0 * PI * (time + 0.05 * pos.y)).sin();
+    let test = (2.0 * PI * (time + 0.05 * (pos.y))).sin();
 
     rgb(test, test, test)
     // rgb(r, r, r)
 }
 
-fn scalar_field_offset(x: f32, y: f32) -> f32 {
-    0.05 * x + 0.05 * y
-}
+// fn scalar_field_offset(x: f32, y: f32) -> f32 {
+//     0.05 * x + 0.05 * y
+// }
 
 // This struct represents our "data state"
 // It should contain and model whatever we want to draw on screen
