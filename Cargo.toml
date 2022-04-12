@@ -165,6 +165,14 @@ path = "necessarydisorder/scalar-fields.rs"
 name = "l1"
 path = "xinnuo/l1.rs"
 
+[[example]]
+name = "l2"
+path = "xinnuo/l2.rs"
+
+[[example]]
+name = "l2_1"
+path = "xinnuo/l2_1.rs"
+
 # Nature of Code
 [[example]]
 name = "vector-1"

@@ -2,8 +2,8 @@ use nannou::prelude::*;
 
 const X: f32 = 100.0;
 const Y: f32 = 200.0;
-// const X_SPEED: f32 = 1.0;
-// const Y_SPEED: f32 = 3.3;
+const X_SPEED: f32 = 0.05;
+const Y_SPEED: f32 = 0.01;
 
 // This struct represents our "data state"
 // It should contain and model whatever we want to draw on screen
@@ -22,7 +22,7 @@ fn model(app: &App) -> Model {
     // We just return an empty struct here
     Model {
         location: pt2(X, Y),
-        velocity: vec2(1.0, 3.0),
+        velocity: vec2(X_SPEED, Y_SPEED),
         acceleration: vec2(0.0, 0.0),
     }
 }
@@ -31,14 +31,15 @@ fn model(app: &App) -> Model {
 fn update(app: &App, model: &mut Model, _update: Update) {
     let mouse = app.mouse.position();
     let dir = mouse - model.location;
+    let dir = dir.normalize() * 0.5;
+    model.acceleration = dir;
+    // let
+    // model.acceleration = pt2(random_range(-1.0, 1.0), random_range(-1.0, 1.0));
 
-    println!("{:?}", &dir.normalize());
-    model.acceleration = dir.normalize() * 0.5;
-
-    // model.acceleration = vec2(random_range(-1.0, 1.0), random_range(-1.0, 1.0));
     model.velocity += model.acceleration;
-    model.velocity.clamp_length_max(1.0);
-    // model.velocity += model.acceleration * 2.0;
+    model.velocity.clamp_length_max(0.01);
+    // println!("{:?}", &model.velocity);
+
     model.location += model.velocity;
 
     if model.location.x > 350.0 || model.location.x < -350.0 {
@@ -55,7 +56,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
     let draw = app.draw();
 
     // Let's first color the background
-    draw.background().color(WHITE);
+    draw.background().color(SNOW);
     // if app.elapsed_frames() == 1 {
     //     draw.background().color(SNOW);
     // }
