@@ -1,3 +1,4 @@
+use nannou::noise::{NoiseFn, OpenSimplex};
 use nannou::prelude::*;
 
 // const MARGIN: f32 = 50.0;
@@ -30,8 +31,13 @@ fn pixel_color(pos: &Vec2, time: f32) -> Rgb {
 }
 
 fn scalar_field_offset(x: f32, y: f32) -> f32 {
-    let distance = (pt2(x, y)).distance(pt2(62.0, 62.0));
-    0.05 * distance
+    let noise = OpenSimplex::new();
+    let noise_scale = 0.03;
+
+    40.0 * noise.get([(x * noise_scale) as f64, (y * noise_scale) as f64]) as f32
+
+    // let distance = (pt2(x, y)).distance(pt2(62.0, 62.0));
+    // 300.0 / (25.0 + distance)
 }
 
 // This struct represents our "data state"
