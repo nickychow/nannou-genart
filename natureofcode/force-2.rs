@@ -10,41 +10,64 @@ struct Mover {
     position: Point2,
     velocity: Vec2,
     acceleration: Vec2,
-    top_speed: f32,
+    mass: f32,
 }
 
 impl Mover {
-    fn new(rect: Rect<f32>) -> Self {
-        let rand_x = random_range(rect.left(), rect.right());
-        let rand_y = random_range(rect.top(), rect.bottom());
-        let position = pt2(rand_x, rand_y);
+    fn new(mass: f32, position: Point2) -> Self {
         let velocity = vec2(0.0, 0.0);
         let acceleration = vec2(0.0, 0.0);
-        let top_speed = 5.0;
         Mover {
             position,
             velocity,
             acceleration,
-            top_speed,
+            mass,
         }
     }
 
-    fn update(&mut self, mouse: Point2) {
-        self.acceleration = mouse - self.position;
-        self.acceleration = self.acceleration.normalize() * 0.2;
+    fn apple_force(&mut self, force: Vec2) {
+        let f = force / self.mass;
+        self.acceleration += f;
+    }
+
+    fn update(&mut self) {
         self.velocity += self.acceleration;
-        self.velocity = self.velocity.clamp_length_max(self.top_speed);
         self.position += self.velocity;
+        self.acceleration *= 0.0;
     }
 
     fn display(&self, draw: &Draw) {
         // Display circle at x position
         draw.ellipse()
             .xy(self.position)
-            .w_h(48.0, 48.0)
-            .rgba(0.5, 0.5, 0.5, 0.7)
+            .radius(self.mass.sqrt() * 10.0)
+            .rgba(0.3, 0.3, 0.3, 0.5)
             .stroke(BLACK)
             .stroke_weight(1.0);
+    }
+
+    fn check_edges(&mut self, rect: Rect) {
+        let radius = self.mass.sqrt() * 10.0;
+        let edge_top = rect.top() - radius;
+        let edge_bottom = rect.bottom() + radius;
+        let edge_left = rect.left() + radius;
+        let edge_right = rect.right() - radius;
+
+        if self.position.x > edge_right {
+            self.velocity.x *= -1.0;
+            self.position.x = edge_right;
+        } else if self.position.x < edge_left {
+            self.velocity.x *= -1.0;
+            self.position.x = edge_left;
+        }
+
+        if self.position.y > edge_top {
+            self.velocity.y *= -1.0;
+            self.position.y = edge_top;
+        } else if self.position.y < edge_bottom {
+            self.velocity.y *= -1.0;
+            self.position.y = edge_bottom;
+        }
     }
 }
 
@@ -58,46 +81,37 @@ fn model(app: &App) -> Model {
         .build()
         .unwrap();
 
+    let movers = (0..20)
+        .map(|_| Mover::new(random_range(0.01_f32, 4.0), pt2(rect.left(), rect.top())))
+        .collect();
+
     // We just return an empty struct here
-    let movers = (0..20).map(|_| Mover::new(rect)).collect();
     Model { movers }
 }
 
 // Updates the model (note the mutable reference)
 fn update(app: &App, model: &mut Model, _update: Update) {
+    let rect = app.window_rect();
+    let wind = vec2(0.01, 0.0);
+
     for mover in &mut model.movers {
-        let mouse = app.mouse.position();
-        mover.update(mouse);
+        let gravity = vec2(0.0, -0.1 * mover.mass);
+        // let mouse = app.mouse.position();
+        mover.apple_force(wind);
+        mover.apple_force(gravity);
+        mover.update();
+        mover.check_edges(rect);
     }
 }
 
 // Draws on the screen
 fn view(app: &App, model: &Model, frame: Frame) {
-    // We will use `draw` to draw on screen
     let draw = app.draw();
-
-    // let win = app.window_rect();
-
-    // let start = pt2(0.0, 0.0);
-    // let mouse = app.mouse.position();
-    // let end = mouse / 2.0;
-
-    // let top_left = win.top_left();
-    // // let l2_start = top_left;
-    // let mag_end = pt2(top_left.x + start.distance(mouse), top_left.y);
-    // // println!("{:?}", start.distance(mouse));
-
-    // let normal_end = mouse.normalize() * 100.0;
 
     // Let's first color the background
     draw.background().color(WHITE);
-
-    // draw.line()
-    //     .start(start)
-    //     .end(normal_end)
-    //     .weight(1.0)
-    //     .color(BLACK);
-
+    // then draw a 42 x 42 (pixels) orange rectangle
+    // at the center of the screen (0, 0)
     for mover in &model.movers {
         mover.display(&draw);
     }

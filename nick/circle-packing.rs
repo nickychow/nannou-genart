@@ -1,15 +1,39 @@
 use nannou::prelude::*;
+// http://www.codeplastic.com/2017/09/09/controlled-circle-packing-with-processing/
+//https://youtu.be/QHEQuoIKgNE
 
 // const LINE_WIDTH: f32 = 2.0;
 const MIN_RADIUS: f32 = 2.0;
-const MAX_RADIUS: f32 = 50.0;
-const N_CIRCLES: usize = 10;
-const CREATE_CIRCLE_ATTEMPTS: usize = 10;
+const MAX_RADIUS: f32 = 300.0;
+const N_CIRCLES: usize = 5000;
+const CREATE_CIRCLE_ATTEMPTS: usize = 1500;
 
 struct Circle {
     coordinates: Point2,
     radius: f32,
     color: Rgba,
+}
+
+impl Circle {
+    fn collides(&self, other: &Circle) -> bool {
+        let distance = self.coordinates.distance(other.coordinates);
+        distance < self.radius + other.radius
+    }
+
+    fn any_collides(&self, others: &[Circle]) -> bool {
+        others.iter().any(|other| self.collides(other))
+    }
+
+    fn edges(&self, rect: Rect) -> bool {
+        self.coordinates.x < rect.right() - self.radius + 1.0
+            && self.coordinates.x > rect.left() + self.radius
+            && self.coordinates.y < rect.top() - self.radius
+            && self.coordinates.y > rect.bottom() + self.radius
+    }
+
+    fn grow(&mut self) {
+        self.radius += 1.0;
+    }
 }
 
 // This struct represents our "data state"
@@ -20,29 +44,30 @@ struct Model {
 
 // Builds the model
 fn model(app: &App) -> Model {
-    let width = 720;
-    let height = 720;
-
-    let half_w = width as f32 * 0.5;
-    let half_h = height as f32 * 0.5;
-
-    app.new_window().size(width, height).build().unwrap();
+    app.new_window().size(720, 720).build().unwrap();
+    let window = app.window_rect();
 
     let mut circles = Vec::<Circle>::with_capacity(N_CIRCLES);
 
     for _ in 0..=N_CIRCLES {
         for _attempt in 0..=CREATE_CIRCLE_ATTEMPTS {
-            let x = random_range(-half_w, half_w);
-            let y = random_range(-half_h, half_h);
             let radius = random_range(MIN_RADIUS, MAX_RADIUS);
-            let coordinates = pt2(x, y);
+            let coordinates = pt2(
+                random_range(window.left(), window.right()),
+                random_range(window.top(), window.bottom()),
+            );
             let color = rgba(random_f32(), random_f32(), random_f32(), random_f32());
 
-            circles.push(Circle {
+            let circle = Circle {
                 coordinates,
                 radius,
                 color,
-            });
+            };
+
+            if !circle.any_collides(&circles) && circle.edges(window) {
+                circles.push(circle);
+                break;
+            }
         }
     }
 
@@ -59,13 +84,15 @@ fn view(app: &App, model: &Model, frame: Frame) {
     let draw = app.draw();
 
     // Let's first color the background
-    draw.background().color(SNOW);
+    draw.background().color(BLACK);
 
     for circle in &model.circles {
         draw.ellipse()
             .xy(circle.coordinates)
             .radius(circle.radius)
-            .color(circle.color);
+            .color(circle.color)
+            .stroke_weight(1.0)
+            .stroke_color(SNOW);
     }
 
     // Eventually, we write our `draw` to frame

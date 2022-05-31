@@ -43,7 +43,7 @@ impl Dot {
     /// cos(t + i + x * y)
     /// sin(x/2) - sin(x-t) - y+6
     /// (x-8)*(y-8) - sin(t)*64
-    /// -.4/(hypot(x-t%10,y-t%8)-t%2*9) // ? something wrong
+    /// -.4/(hypot(x-t%10,y-t%8)-t%2*9)
     /// Math.sin(t-Math.sqrt(x*x+y*y))
     /// [5463,2194,2386][y+t*9&7]&1<<x-1
     /// (((x-8)/y+t*5)&1^1/y*8&1)*y/5
@@ -80,18 +80,25 @@ impl Dot {
         // y - t * 3.0 + 9.0 + 3.0 * (x * 3.0 - t).cos() - 5.0 * (x * 7.0).sin()
         // 1.0 / 32.0 * (t / 64.0 * x * (i - x).tan()).tan()
         // (x - t % 4.0 * 5.0).hypot(y - 8.0)
+        // 8.0 * (t % 2.0) - (x - 7.5).hypot(y - 7.5)
+        -0.4 / ((x - t % 10.0).hypot(y - t % 8.0) - (t % 2.0 * 9.0))
+        // (2.0 * ((y - 7.5) / (x - 7.5)).atan() + 5.0 * t).sin()
+        // (x - y) - (t).sin() * 16.0
 
         // t.sin()
         // i / 256.0
         // i - 76.0
         // y - t
 
-        // -0.4 / ((x - t).hypot(y - t) - (t as u32 % 2 * 9) as f32)
+        // -0.4 / ((x - t % 10.0).hypot(y - t % 8.0) - (t % 2.0 * 9.0))
         // y - t * 4.0
 
         // (t - ((x - 7.5).powi(2) + (y - 6.5).powi(2)).sqrt()).sin()
         // y - t * 3.0 + 9.0 + 3.0 * (x * 3.0 - t).cos() - 5.0 * (x * 7.0).sin()
-        (x - t % 4.0 * 5.0).hypot(y - 8.0)
+        // 8.0 * (t % 2.0) - (x - 7.5).hypot(y - 7.5)
+
+        // (2.0 * ((y - 7.5) / (x - 7.5)).atan() + 5.0 * t).sin()
+        // (x - y) - (t).sin() * 16.0
     }
 }
 
@@ -147,8 +154,6 @@ fn view(app: &App, model: &Model, frame: Frame) {
     );
     let gdraw = draw.scale_y(-1.0).xy(-offset);
 
-    let window = app.main_window();
-
     for dot in &model.dots {
         gdraw
             .ellipse()
@@ -161,6 +166,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
 
     // gdraw.ellipse().x_y(0.0, 0.0).w_h(16.0, 16.0).color(ORANGE);
     // // draw miscellaneous stuff here
+    // let window = app.main_window();
     // let win = window.rect();
     // draw_grid(&draw, &win, 80.0, 1.0);
     // draw_grid(&draw, &win, 16.0, 0.5);

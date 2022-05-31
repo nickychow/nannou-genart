@@ -2,6 +2,7 @@
 name = "nannou-genart"
 version = "0.1.0"
 edition = "2021"
+resolver="2"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -116,6 +117,13 @@ path = "nick/line.rs"
 name = "test"
 path = "nick/test.rs"
 
+[[example]]
+name = "tixy"
+path = "nick/tixy.rs"
+
+[[example]]
+name = "day1"
+path = "nick/20200315.rs"
 
 # Sketches
 [[example]]
@@ -160,6 +168,11 @@ path = "challenge/acceleration.rs"
 name = "scalar-fields"
 path = "necessarydisorder/scalar-fields.rs"
 
+[[example]]
+name = "vector-fields"
+path = "necessarydisorder/vector-fields.rs"
+
+
 # Xinnuo
 [[example]]
 name = "l1"
@@ -173,10 +186,24 @@ path = "xinnuo/l2.rs"
 name = "l2_1"
 path = "xinnuo/l2_1.rs"
 
+[[example]]
+name = "l3"
+path = "xinnuo/l3.rs"
+
+
 # Nature of Code
 [[example]]
 name = "vector-1"
 path = "natureofcode/vector-1.rs"
+
+# Nature of Code
+[[example]]
+name = "force-1"
+path = "natureofcode/force-1.rs"
+
+[[example]]
+name = "force-2"
+path = "natureofcode/force-2.rs"
 
 # nannou system
 [[example]]

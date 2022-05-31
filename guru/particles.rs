@@ -46,7 +46,7 @@ fn model(app: &App) -> Model {
     let h = t - b;
 
     let mut particles = Vec::new();
-    for _i in 0..2000 {
+    for _i in 0..12000 {
         let x = random_f32() * w + r;
         let y = random_f32() * h + b;
         particles.push(Particle::new(x, y));
@@ -84,7 +84,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
     let draw = app.draw();
 
     // Let's first color the background
-    // draw.background().color(WHITE);
+    // draw.background().color(BLACK);
 
     for p in &model.particles {
         draw.ellipse()
